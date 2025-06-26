@@ -9,7 +9,7 @@ router.get("/posts", async (req, res) => {
   try {
     const rows = await db.query(
       `
-      SELECT p.*,u.* FROM posts p LEFT JOIN users u ON p.userId = u.id ORDER BY p.id DESC LIMIT 20;
+      SELECT p.*,u.name,u.username,u.bio FROM posts p LEFT JOIN users u ON p.userId = u.id ORDER BY p.id DESC LIMIT 20;
       `
     );
     res.json(rows);
