@@ -25,7 +25,7 @@ router.get("/posts/:id", async (req, res) => {
       `
       SELECT p.*, u.* FROM posts p LEFT JOIN users u ON p.userId = u.id WHERE p.id = ?;
       `,
-      Number(id)
+      id
     );
     res.json(data);
   } catch (error) {

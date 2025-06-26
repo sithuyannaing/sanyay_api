@@ -10,7 +10,7 @@ const postSeeder = async () => {
         userId INT NOT NULL,
         created DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
         PRIMARY KEY (id),
-        CONSTRAINT fk_userPost FOREIGN KEY (userId) REFERENCES users (id) ON DELETE CASCADE
+        CONSTRAINT FOREIGN KEY (userId) REFERENCES users (id) ON DELETE CASCADE
         );`);
     console.log("User Table created");
   } catch (error) {
