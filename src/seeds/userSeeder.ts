@@ -4,14 +4,14 @@ import db from "../databases/db";
 
 const userSeeder = async () => {
   try {
-    await db.query(`CREATE TABLE IF NOT EXISTS users (
-      id INT NOT NULL AUTO_INCREMENT,
+    await db.query(`CREATE TABLE users (
+      user_id INT NOT NULL AUTO_INCREMENT,
       name VARCHAR(30) NOT NULL,
       username VARCHAR(30) NOT NULL UNIQUE,
       bio TEXT,
       password VARCHAR(100) NOT NULL,
       created DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
-      PRIMARY KEY (id)
+      PRIMARY KEY (user_id)
     );`);
     console.log("User Table created");
   } catch (error) {

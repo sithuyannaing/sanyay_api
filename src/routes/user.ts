@@ -1,14 +1,38 @@
-import express from "express";
+import express, { Request, Response } from "express";
 import bcrypt from "bcrypt";
 import db from "../databases/db";
+import jwt from "jsonwebtoken";
+import dotenv from "dotenv";
+dotenv.config();
 
 const router = express.Router();
 
+router.post("/login", async (req: Request, res: Response): Promise<any> => {
+  const { username, password } = req.body;
+  if (!username || !password) {
+    return res.status(400).json({ msg: "username and password required" });
+  }
+  const user: any = await db.query(
+    `SELECT * FROM users WHERE username = ? LIMIT 1;`,
+    username
+  );
+  if (user) {
+    if (await bcrypt.compare(password, user[0].password)) {
+      if (process.env.JWT_SECRET) {
+        const token = jwt.sign(user, process.env.JWT_SECRET);
+        return res.json({ token, user });
+      }
+    }
+  }
+  res.status(401).json({ msg: "incorrect username or password" });
+});
+
 router.get("/users", async (req, res) => {
   try {
-    const data = await db.query(
-      `SELECT u.*,p.* FROM users u LEFT JOIN posts p ON u.Id = p.userId`
-    );
+    // const data = await db.query(
+    //   `SELECT u.*,p.* FROM users u LEFT JOIN posts p ON u.Id = p.userId`
+    // );
+    const data = await db.query(`SELECT * FROM users`);
     res.json(data);
   } catch (error) {
     console.log(error);

@@ -6,7 +6,7 @@ const seed = async () => {
   try {
     await userSeeder();
     await postSeeder();
-    //await commentSeeder();
+    await commentSeeder();
   } catch (error) {
     console.log(error);
   }
