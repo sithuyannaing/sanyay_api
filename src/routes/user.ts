@@ -19,7 +19,9 @@ router.post("/login", async (req: Request, res: Response): Promise<any> => {
   if (user) {
     if (await bcrypt.compare(password, user[0].password)) {
       if (process.env.JWT_SECRET) {
-        const token = jwt.sign(user, process.env.JWT_SECRET);
+        console.log("...");
+        const token = jwt.sign(JSON.stringify(user), process.env.JWT_SECRET);
+        console.log(token);
         return res.json({ token, user });
       }
     }
@@ -52,10 +54,10 @@ router.get("/users/:id", async (req, res) => {
   }
 });
 
-router.post("/users", async (req, res) => {
+router.post("/users", async (req: Request, res: Response) => {
   const { name, username, bio, password } = req.body;
-  if (!name || !username || !bio || !password) {
-    res.status(400).json({ msg: "name, username, bio, password are required" });
+  if (!name || !username || !password) {
+    res.status(400).json({ msg: "name, username and password required" });
   }
   const hash = await bcrypt.hash(password, 10);
   const user = await db.query(`INSERT INTO users SET ?`, {
