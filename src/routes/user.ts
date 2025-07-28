@@ -31,6 +31,7 @@ router.post("/login", async (req: Request, res: Response): Promise<any> => {
 });
 
 router.get("/verify", auth, async (req, res) => {
+  console.log(res.locals, "locals of res.");
   const user = res.locals.user;
   res.json(user);
 });
