@@ -2,6 +2,7 @@ import express, { Request, Response } from "express";
 import bcrypt from "bcrypt";
 import db from "../databases/db";
 import jwt from "jsonwebtoken";
+import { auth } from "../middlewares/auth";
 import dotenv from "dotenv";
 dotenv.config();
 
@@ -27,6 +28,11 @@ router.post("/login", async (req: Request, res: Response): Promise<any> => {
     }
   }
   res.status(401).json({ msg: "incorrect username or password" });
+});
+
+router.get("/verify", auth, async (req, res) => {
+  const user = res.locals.user;
+  res.json(user);
 });
 
 router.get("/users", async (req, res) => {
